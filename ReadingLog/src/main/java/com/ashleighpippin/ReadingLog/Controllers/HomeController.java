@@ -20,6 +20,7 @@ import com.ashleighpippin.ReadingLog.Models.User;
 import com.ashleighpippin.ReadingLog.Services.ReadingService;
 import com.ashleighpippin.ReadingLog.Services.TagService;
 import com.ashleighpippin.ReadingLog.Services.UserService;
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -74,6 +75,8 @@ public class HomeController {
 		}
 		User user = userService.getUserById(userId);
 		model.addAttribute("user", user);
+		model.addAttribute("tags", tagService.allTags());
+		model.addAttribute("readings", readingService.allReadings());
 		return "dashboard.jsp";
 	}
 

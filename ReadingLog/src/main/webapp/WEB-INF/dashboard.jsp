@@ -41,12 +41,13 @@
   </div>
 </nav>
 
-<p>Welcome to the dashboard. There's nothing to see here yet.</p>
-
 <div class="container">
 <div class="row">
 <div class="col">
-<p>Sort by: <button>tag</button> <button>tag</button>  <button>tag</button>  <button>tag</button></p>
+<p>Sort by: 
+<c:forEach var="tag" items="${tags}">
+<button>${tag.subject}</button>
+</c:forEach>
 </div>
 </div>
 <div class="row">
@@ -60,16 +61,18 @@
 <div class="row">
 <div class="col">
 
+<c:forEach var="reading" items="${readings}">
 <div class="card" style="width:100%;">
   <div class="card-body">
-    <h5 class="card-title">Reading Title</h5>
-    <h6 class="card-subtitle mb-2 text-muted">URL</h6>
-    <p class="card-text">User comment about the reading.</p>
-    <p class="card-footer">tags: tag, tag, tag</p>
-
+    <h5 class="card-title">${reading.title}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">${reading.url}</h6>
+    <p class="card-text">${reading.comment}</p>
+    <p class="card-footer"><c:forEach var="tag" items="${reading.tags}">
+						<span>${tag.subject}<c:if test="${reading.tags.indexOf(tag)<reading.tags.size()-1}">,</c:if></span>
+					</c:forEach></p>
   </div>
 </div>
-
+</c:forEach>
 
 </div>
 </div>
