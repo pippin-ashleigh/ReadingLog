@@ -19,7 +19,7 @@
 </head>
 <body>
    
-   <nav class="navbar navbar-expand-lg bg-body-tertiary">
+   <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-dark bg-danger">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Welcome to Your Reading Log, ${user.userName}</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
 <c:forEach var="reading" items="${readings}">
 <div class="card" style="width:100%;">
   <div class="card-body">
-    <h5 class="card-title">${reading.title}</h5>
+    <h5 class="card-title"><a href="/readings/${reading.id}">${reading.title}</a>  <a href="/readings/${reading.id}/edit"><button class="btn btn-link">Edit</button></a></h5>
     <h6 class="card-subtitle mb-2 text-muted">${reading.url}</h6>
     <p class="card-text">${reading.comment}</p>
     <p class="card-footer"><c:forEach var="tag" items="${reading.tags}">

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ashleighpippin.ReadingLog.Models.Reading;
+import com.ashleighpippin.ReadingLog.Models.User;
 import com.ashleighpippin.ReadingLog.Repositories.ReadingRepository;
 
 @Service
@@ -24,6 +25,16 @@ public class ReadingService {
 	public List<Reading> allReadings() {
 		return readingRepo.findAll();
 	}
+	
+	//READ ALL BY USER
+	public List<Reading> getUserReadings(User user){
+		return readingRepo.findAllByUser(user);
+	}
+	
+//	//READ ALL BY OTHER USERS
+//	public List<Reading> getOtherUserReadings(User user){
+//		return readingRepo.findByUserNotContains(user);
+//	}
 
 	//READ ONE
 	public Reading findByID(Long id) {

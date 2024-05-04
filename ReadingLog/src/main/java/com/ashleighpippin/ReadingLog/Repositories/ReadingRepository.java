@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+
 import com.ashleighpippin.ReadingLog.Models.Reading;
 import com.ashleighpippin.ReadingLog.Models.User;
 
@@ -12,4 +13,6 @@ import com.ashleighpippin.ReadingLog.Models.User;
 public interface ReadingRepository extends CrudRepository<Reading, Long>{
 
 	public List<Reading> findAll();
+	public List<Reading> findAllByUser(User user);
+//	public List<Reading> findByUserNotContains(User user);
 }

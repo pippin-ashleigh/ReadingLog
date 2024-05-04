@@ -7,11 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import com.ashleighpippin.ReadingLog.Models.LoginUser;
 import com.ashleighpippin.ReadingLog.Models.Reading;
@@ -20,7 +24,7 @@ import com.ashleighpippin.ReadingLog.Models.User;
 import com.ashleighpippin.ReadingLog.Services.ReadingService;
 import com.ashleighpippin.ReadingLog.Services.TagService;
 import com.ashleighpippin.ReadingLog.Services.UserService;
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -146,5 +150,68 @@ public class HomeController {
 		return null;
 	}
 	
-	
+	@GetMapping("readings/{id}/edit")
+	public String editReadingPage(@PathVariable("id") Long id, HttpSession session, Model model) {
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/";
+		}
+		Long userId = (Long) session.getAttribute("userId");
+		User user = userService.getUserById(userId);
+		Reading reading = readingService.findByID(id);
+		model.addAttribute("reading", reading);
+		model.addAttribute("user", user);
+		return "edit_reading.jsp";
+	}
+
+@PutMapping("/projects/{id}/edit")
+public String editReading(@PathVariable("id") Long id, @Valid @ModelAttribute("reading") Reading reading,
+		BindingResult result, HttpSession session, Model model) {
+	if (session.getAttribute("userId") == null) {
+		return "redirect:/";
+	}
+
+	if (result.hasErrors()) {
+		model.addAttribute("reading", reading);
+		return "edit_reading.jsp";
+	} else {
+
+		Reading r = readingService.findByID(id);
+		Long userId = (Long) session.getAttribute("userId");
+		User user = userService.getUserById(userId);
+		if (r.getUser().getId().equals(userId)) {
+			reading.setId(id);
+			reading.setUser(user);
+			readingService.updateReading(reading);
+		}
+		return "redirect:/dashboard";
+	}
+
 }
+
+@GetMapping("/readings/{id}")
+public String viewReading(@PathVariable("id") Long id, Model model, HttpSession session) {
+	Long userId = (Long) session.getAttribute("userId");
+	if (userId == null) {
+		return "redirect:/";
+	}
+	User user = userService.getUserById(userId);
+	model.addAttribute("user", user);
+	model.addAttribute("reading", readingService.findByID(id));
+	return "view_reading.jsp";
+}
+
+@DeleteMapping("/readings/{id}")
+public String deleteReading(@PathVariable("id") Long id, HttpSession session) {
+	if (session.getAttribute("userId") == null) {
+		return "redirect:/";
+	}
+	Long userId = (Long) session.getAttribute("userId");
+	Reading r = readingService.findByID(id);
+//	if (r.getUser().getId() == userId) {
+		readingService.deleteReading(id);
+//	}
+	return "redirect:/dashboard";
+}
+
+}
+

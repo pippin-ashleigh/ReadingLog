@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Add Reading Log</title>
+    <title>Login or Register</title>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css"> <!-- change to match your file/naming structure -->
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -21,7 +21,7 @@
    
    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-dark bg-danger"">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">Welcome to Your Reading Log, ${user.userName}</a>
+    <a class="navbar-brand" href="/">Welcome to Your Reading Log</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -40,39 +40,3 @@
     </div>
   </div>
 </nav>
-<p class="error">${error}</p>
-<div class="text-center">
-<form:form action="/readings/new" method="POST" modelAttribute="reading">
-		<div class="form-control">
-		<form:label path="title">Title:</form:label>
-		<form:input type="text" path="title"/>
-		<form:errors path="title" class="text-danger"/>
-		</div>
-		<div class="form-control">
-		<form:label path="url">URL:</form:label>
-		<form:input type="text" path="url"/>
-		<form:errors path="url" class="text-danger"/>
-		</div>
-		<div class="form-control">
-		<form:label for="comment" path="comment">Comments:</form:label>
-		<form:textarea rows="4" path="comment"/>
-		<form:errors path="comment" class="text-danger"/>
-		</div>
-		
-		<div>
-			<label for="listOfTags">Tags:</label>
-			<input class="input" name="listOfTags" id="listOfTags"/>
-		</div>
-		
-		
-		
-		<div class="form-control">
-		<form:label path="readDate">Date Read:</form:label>
-		<form:input type="date" path="readDate"/>
-		<form:errors path="readDate" class="text-danger"/>
-		</div>
-		<a class="btn btn-danger" href="/dashboard">Cancel</a>
-		<input type="submit" value="Save">
-	</form:form>
- </div>
-

@@ -19,7 +19,7 @@
 </head>
 <body>
    
-   <nav class="navbar navbar-expand-lg bg-body-tertiary">
+   <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-dark bg-danger"">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Welcome to Your Reading Log</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,3 +40,21 @@
     </div>
   </div>
 </nav>
+
+
+<div class="card" style="width:100%;">
+  <div class="card-body">
+    <h5 class="card-title">${reading.title}  <a href="/readings/${reading.id}/edit"><button class="btn btn-link">Edit</button></a></h5>
+    <h6 class="card-subtitle mb-2 text-muted">${reading.url}</h6>
+    <p class="card-text">${reading.comment}</p>
+    <p class="card-footer"><c:forEach var="tag" items="${reading.tags}">
+						<span>${tag.subject}<c:if test="${reading.tags.indexOf(tag)<reading.tags.size()-1}">,</c:if></span>
+					</c:forEach></p>
+  </div>
+</div>
+
+		<form action="/readings/${reading.id}" method="post">
+			<input type="hidden" name="_method" value="delete"> <input
+				type="submit" value="Delete Project" class="btn btn-danger">
+		</form>
+
