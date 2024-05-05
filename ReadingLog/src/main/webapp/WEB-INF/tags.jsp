@@ -40,3 +40,40 @@
     </div>
   </div>
 </nav>
+
+<div class="container">
+<div class="row">
+<div class="col">
+<p>Sort by: 
+<c:forEach var="tag" items="${tags}">
+<button><a href="/tags/{tag}">${tag.subject}</a></button>
+</c:forEach>
+</div>
+</div>
+<div class="row">
+<div class="col">
+<a href="/readings/new" class="btn btn-danger">Add New Reading Log</a>
+</div>
+<div class="col">
+<a href="/dashboard/others" class="btn btn-danger">What Other Users Are Reading</a>
+</div>
+</div>
+<div class="row">
+<div class="col">
+
+<c:forEach var="reading" items="${readings}">
+<div class="card" style="width:100%;">
+  <div class="card-body">
+    <h5 class="card-title"><a href="/readings/${reading.id}">${reading.title}</a>  <a href="/readings/${reading.id}/edit"><button class="btn btn-link">Edit</button></a></h5>
+    <h6 class="card-subtitle mb-2 text-muted">${reading.url}</h6>
+    <p class="card-text">${reading.comment}</p>
+    <p class="card-footer"><c:forEach var="tag" items="${reading.tags}">
+						<span>${tag.subject}<c:if test="${reading.tags.indexOf(tag)<reading.tags.size()-1}">,</c:if></span>
+					</c:forEach></p>
+  </div>
+</div>
+</c:forEach>
+
+</div>
+</div>
+</div>

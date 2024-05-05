@@ -55,6 +55,6 @@
 
 		<form action="/readings/${reading.id}" method="post">
 			<input type="hidden" name="_method" value="delete"> <input
-				type="submit" value="Delete Project" class="btn btn-danger">
+				type="submit" value="Delete Log" class="btn btn-danger">
 		</form>
 

@@ -46,7 +46,7 @@
 <div class="col">
 <p>Sort by: 
 <c:forEach var="tag" items="${tags}">
-<button>${tag.subject}</button>
+<button><a href="/tags/{tag}">${tag.subject}</a></button>
 </c:forEach>
 </div>
 </div>

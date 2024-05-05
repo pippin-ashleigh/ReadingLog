@@ -14,6 +14,6 @@ public interface ReadingRepository extends CrudRepository<Reading, Long>{
 
 	public List<Reading> findAll();
 	public List<Reading> findAllByUser(User user);
-//	public List<Reading> findAllByTag(Tag tag);
-//	public List<Reading> findByUserNotContains(User user);
+	public List<Reading> findAllByTagsContaining(Tag tag);
+	public List<Reading> findByUserNot(User user);
 }

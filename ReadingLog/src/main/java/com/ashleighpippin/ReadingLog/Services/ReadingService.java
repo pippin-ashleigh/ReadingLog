@@ -32,15 +32,15 @@ public class ReadingService {
 		return readingRepo.findAllByUser(user);
 	}
 	
-//	//READ ALL BY TAG
-//	public List<Reading> getTaggedReadings(Tag tag){
-//		return readingRepo.findAllByTag(tag);
-//	}
+	//READ ALL BY TAG
+	public List<Reading> getTaggedReadings(Tag tag){
+		return readingRepo.findAllByTagsContaining(tag);
+	}
 	
-//	//READ ALL BY OTHER USERS
-//	public List<Reading> getOtherUserReadings(User user){
-//		return readingRepo.findByUserNotContains(user);
-//	}
+	//READ ALL BY OTHER USERS
+	public List<Reading> getOtherUserReadings(User user){
+		return readingRepo.findByUserNot(user);
+	}
 
 	//READ ONE
 	public Reading findByID(Long id) {

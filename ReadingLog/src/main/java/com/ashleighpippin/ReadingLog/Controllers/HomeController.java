@@ -78,7 +78,7 @@ public class HomeController {
 		User user = userService.getUserById(userId);
 		model.addAttribute("user", user);
 		model.addAttribute("tags", tagService.allTags());
-		model.addAttribute("readings", readingService.allReadings());
+		model.addAttribute("readings", readingService.getUserReadings(user));
 		return "dashboard.jsp";
 	}
 
@@ -100,11 +100,13 @@ public class HomeController {
 	}
 	
 	@PostMapping("/readings/new")
-	public String addReading(@Valid
+	public String addReading(HttpSession session, @Valid
 			@ModelAttribute("reading") Reading reading,
 			BindingResult result,
 			@RequestParam("listOfTags") String listOfTags,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes
+			) {
+	
 	if(result.hasErrors()) {
 		return "add_reading.jsp";
 	}
@@ -117,7 +119,9 @@ public class HomeController {
 		return "redirect:/questions/new";
 	}
 	
-
+	Long userId = (Long) session.getAttribute("userId");
+	User user = userService.getUserById(userId);
+	reading.setUser(user);
 	reading.setTags(readingTags);
 	readingService.addReading(reading);
 	
@@ -225,21 +229,22 @@ public String OtherUsers(Model model, HttpSession session) {
 	model.addAttribute("user", user);
 	model.addAttribute("tags", tagService.allTags());
 	//change this to be filtered:
-	model.addAttribute("readings", readingService.allReadings());
+	model.addAttribute("readings", readingService.getOtherUserReadings(user));
 	return "other_users.jsp";
 }
 
-//@GetMapping("/tags/{tag}")
-//public String viewTag(@PathVariable("tag") Tag tag, Model model, HttpSession session) {
-//	Long userId = (Long) session.getAttribute("userId");
-//	if (userId == null) {
-//		return "redirect:/";
-//	}
-//	User user = userService.getUserById(userId);
-//	model.addAttribute("user", user);
-//	model.addAttribute("reading", readingService.getTaggedReadings(tag));
-//	return "tags.jsp";
-//}
+@GetMapping("/tags/{tag}")
+public String viewTag(@PathVariable("tag") Tag tag, Model model, HttpSession session) {
+	Long userId = (Long) session.getAttribute("userId");
+	if (userId == null) {
+		return "redirect:/";
+	}
+	User user = userService.getUserById(userId);
+	model.addAttribute("user", user);
+	model.addAttribute("tags", tagService.allTags());
+	model.addAttribute("reading", readingService.getTaggedReadings(tag));
+	return "tags.jsp";
+}
 
 }
 
