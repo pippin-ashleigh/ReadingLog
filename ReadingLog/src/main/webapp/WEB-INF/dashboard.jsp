@@ -52,10 +52,10 @@
 </div>
 <div class="row">
 <div class="col">
-<a href="/readings/new">Add New Reading Log</a>
+<a href="/readings/new" class="btn btn-danger">Add New Reading Log</a>
 </div>
 <div class="col">
-<a href="#">What Other Users Are Reading</a>
+<a href="/dashboard/others" class="btn btn-danger">What Other Users Are Reading</a>
 </div>
 </div>
 <div class="row">

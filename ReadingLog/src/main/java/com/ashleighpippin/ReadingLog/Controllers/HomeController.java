@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import com.ashleighpippin.ReadingLog.Models.LoginUser;
 import com.ashleighpippin.ReadingLog.Models.Reading;
 import com.ashleighpippin.ReadingLog.Models.Tag;
@@ -24,7 +23,6 @@ import com.ashleighpippin.ReadingLog.Models.User;
 import com.ashleighpippin.ReadingLog.Services.ReadingService;
 import com.ashleighpippin.ReadingLog.Services.TagService;
 import com.ashleighpippin.ReadingLog.Services.UserService;
-
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -160,10 +158,11 @@ public class HomeController {
 		Reading reading = readingService.findByID(id);
 		model.addAttribute("reading", reading);
 		model.addAttribute("user", user);
+		//need to add tags somehow
 		return "edit_reading.jsp";
 	}
 
-@PutMapping("/projects/{id}/edit")
+@PutMapping("/readings/{id}/edit")
 public String editReading(@PathVariable("id") Long id, @Valid @ModelAttribute("reading") Reading reading,
 		BindingResult result, HttpSession session, Model model) {
 	if (session.getAttribute("userId") == null) {
@@ -178,11 +177,14 @@ public String editReading(@PathVariable("id") Long id, @Valid @ModelAttribute("r
 		Reading r = readingService.findByID(id);
 		Long userId = (Long) session.getAttribute("userId");
 		User user = userService.getUserById(userId);
-		if (r.getUser().getId().equals(userId)) {
+//		if (r.getUser().getId().equals(userId)) {
 			reading.setId(id);
 			reading.setUser(user);
+		List <Tag> tags =	reading.getTags();
+			reading.setTags(tags);
+			//need to set tags somehow
 			readingService.updateReading(reading);
-		}
+//		}
 		return "redirect:/dashboard";
 	}
 
@@ -212,6 +214,32 @@ public String deleteReading(@PathVariable("id") Long id, HttpSession session) {
 //	}
 	return "redirect:/dashboard";
 }
+
+@GetMapping("/dashboard/others")
+public String OtherUsers(Model model, HttpSession session) {
+	Long userId = (Long) session.getAttribute("userId");
+	if (userId == null) {
+		return "redirect:/";
+	}
+	User user = userService.getUserById(userId);
+	model.addAttribute("user", user);
+	model.addAttribute("tags", tagService.allTags());
+	//change this to be filtered:
+	model.addAttribute("readings", readingService.allReadings());
+	return "other_users.jsp";
+}
+
+//@GetMapping("/tags/{tag}")
+//public String viewTag(@PathVariable("tag") Tag tag, Model model, HttpSession session) {
+//	Long userId = (Long) session.getAttribute("userId");
+//	if (userId == null) {
+//		return "redirect:/";
+//	}
+//	User user = userService.getUserById(userId);
+//	model.addAttribute("user", user);
+//	model.addAttribute("reading", readingService.getTaggedReadings(tag));
+//	return "tags.jsp";
+//}
 
 }
 

@@ -57,7 +57,7 @@
    			<form:errors path="password" class="text-danger"/>
    		</div>
    	
-   		<button type="submit" class="btn btn-primary">Login</button>
+   		<button type="submit" class="btn btn-danger">Login</button>
  	</form:form>
  	</div>
  	<div class="col">
@@ -85,7 +85,7 @@
    			<form:errors path="confirm" class="text-danger"/>
    		</div>
    	
-   		<button type="submit" class="btn btn-secondary">Register</button>
+   		<button type="submit" class="btn btn-danger">Register</button>
  	</form:form>
    </div>
    </div>
