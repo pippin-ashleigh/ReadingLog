@@ -61,12 +61,13 @@
 		<form:errors path="comment" class="text-danger"/>
 		</div>
 		
-		<div>
-			<label for="listOfTags">Tags:</label>
-			<input class="input" name="listOfTags" id="listOfTags"/>
+		
+		<div class="form-control">
+		<form:label for="tagList" path="tagList">Tags:</form:label>
+		<input type="text" name="tagList" value="${tags}"/>
+		<form:errors path="tagList" class="text-danger"/>
 		</div>
-		
-		
+	
 		
 		<div class="form-control">
 		<form:label path="readDate">Date Read:</form:label>

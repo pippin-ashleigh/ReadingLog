@@ -33,8 +33,9 @@ public class ReadingService {
 	}
 	
 	//READ ALL BY TAG
-	public List<Reading> getTaggedReadings(Tag tag){
-		return readingRepo.findAllByTagsContaining(tag);
+	public List<Reading> getTaggedReadings(String subject){
+		Tag tag = new Tag("subject");
+		return readingRepo.findAllByTagsSubject(subject);
 	}
 	
 	//READ ALL BY OTHER USERS

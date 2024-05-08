@@ -2,6 +2,7 @@ package com.ashleighpippin.ReadingLog.Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -152,8 +153,8 @@ public class HomeController {
 		return null;
 	}
 	
-	@GetMapping("readings/{id}/edit")
-	public String editReadingPage(@PathVariable("id") Long id, HttpSession session, Model model) {
+@GetMapping("readings/{id}/edit")
+public String editReadingPage(@PathVariable("id") Long id, HttpSession session, Model model) {
 		if (session.getAttribute("userId") == null) {
 			return "redirect:/";
 		}
@@ -162,35 +163,62 @@ public class HomeController {
 		Reading reading = readingService.findByID(id);
 		model.addAttribute("reading", reading);
 		model.addAttribute("user", user);
-		//need to add tags somehow
+//		List <Tag> tags =	reading.getTags();
+//		System.out.println(tags);
+//		String tagString = "";
+//		for(Tag tag:tags) {
+//			tagString += tag.getSubject() + ",";
+//		}
+//		System.out.println(tagString);
+//		model.addAttribute("tags", tagString);
+		
+		  List<Tag> tags = reading.getTags();
+		    // Using Java 8 Stream API to join subjects with a comma
+		    String tagString = tags.stream()
+		                           .map(Tag::getSubject) // Assuming Tag has a method getSubject()
+		                           .collect(Collectors.joining(", ")); // Joins all subjects with a comma and a space
+
+		    model.addAttribute("tags", tagString);
+		
 		return "edit_reading.jsp";
 	}
 
 @PutMapping("/readings/{id}/edit")
-public String editReading(@PathVariable("id") Long id, @Valid @ModelAttribute("reading") Reading reading,
+public String editReading(RedirectAttributes redirectAttributes, @RequestParam("tagList") String tagList, @PathVariable("id") Long id, @Valid @ModelAttribute("reading") Reading reading,
 		BindingResult result, HttpSession session, Model model) {
 	if (session.getAttribute("userId") == null) {
 		return "redirect:/";
 	}
-
+	List<Tag> readingTags = checkTags(tagList);
+	System.out.println("tagList check");
+	System.out.println(tagList);
+	
+//	if(readingTags==null || readingTags.size()>10) {
+//		redirectAttributes.addFlashAttribute("error", "The number of tags must be between 1 and 10");
+//		return "edit_reading.jsp";
+//	}
+//	
+	
 	if (result.hasErrors()) {
 		model.addAttribute("reading", reading);
 		return "edit_reading.jsp";
 	} else {
-
+	
 		Reading r = readingService.findByID(id);
 		Long userId = (Long) session.getAttribute("userId");
 		User user = userService.getUserById(userId);
 //		if (r.getUser().getId().equals(userId)) {
 			reading.setId(id);
 			reading.setUser(user);
-		List <Tag> tags =	reading.getTags();
-			reading.setTags(tags);
-			//need to set tags somehow
-			readingService.updateReading(reading);
+//		List <Tag> theseTags =	r.getTags();
+//		System.out.println(theseTags);	
+//			//need to set tags somehow
+		reading.setTags(readingTags);
+		readingService.updateReading(reading);
 //		}
 		return "redirect:/dashboard";
 	}
+
 
 }
 
@@ -233,8 +261,8 @@ public String OtherUsers(Model model, HttpSession session) {
 	return "other_users.jsp";
 }
 
-@GetMapping("/tags/{tag}")
-public String viewTag(@PathVariable("tag") Tag tag, Model model, HttpSession session) {
+@GetMapping("/tags/{subject}")
+public String viewTag(@PathVariable("subject") String subject, Model model, HttpSession session) {
 	Long userId = (Long) session.getAttribute("userId");
 	if (userId == null) {
 		return "redirect:/";
@@ -242,7 +270,9 @@ public String viewTag(@PathVariable("tag") Tag tag, Model model, HttpSession ses
 	User user = userService.getUserById(userId);
 	model.addAttribute("user", user);
 	model.addAttribute("tags", tagService.allTags());
-	model.addAttribute("reading", readingService.getTaggedReadings(tag));
+	Tag tag = new Tag("subject");
+	model.addAttribute("readings", readingService.getTaggedReadings(subject));
+	System.out.println(readingService.getTaggedReadings(subject));
 	return "tags.jsp";
 }
 
