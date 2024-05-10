@@ -12,4 +12,5 @@ import com.ashleighpippin.ReadingLog.Models.Tag;
 public interface TagRepository extends CrudRepository<Tag, Long>{
 	Tag findBySubjectIs(String subject);
 	public List<Tag> findAll();
+	
 }
